@@ -12,12 +12,12 @@ class Solution:
         for i in range(len(nums1)-1):
             for j in range(i+1,len(nums1)):
                 v = nums1[i]*nums1[j]
-                if n2_squared.get(v):
+                if v in n2_squared:
                     triplets += n2_squared[v]
 
         for i in range(len(nums2)-1):
             for j in range(i+1,len(nums2)):
                 v = nums2[i]*nums2[j]
-                if n1_squared.get(v):
+                if v in n1_squared: 
                     triplets += n1_squared[v]
         return(triplets)
