@@ -1,0 +1,18 @@
+class Solution:
+    def removeDuplicateLetters(self, s: str) -> str:
+        
+        latest_occ = {c:i for i,c in enumerate(s)}
+        stack = ['!']
+        visited = set()
+        
+        for ind,st in enumerate(s):
+            if st in visited: continue # it's a duplicate dont need it
+            
+            while st < stack[-1] and latest_occ[stack[-1]] > ind:
+                visited.remove(stack.pop())
+            
+            stack.append(st)
+            visited.add(st)
+        
+        return("".join(stack[1:]))
+        
