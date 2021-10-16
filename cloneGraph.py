@@ -37,7 +37,7 @@ class Solution:
                 dic[node].neighbors.append(dic[neigh])
                 
                 
-    # BFS
+    # DFS iterative
 class Solution:
     
     def cloneGraph(self, node: 'Node') -> 'Node':
@@ -45,9 +45,30 @@ class Solution:
             return
         nodeCopy = Node(node.val, [])
         dic = {node: nodeCopy}
-        queue = [node]
+        stack = [node]
         while queue:
-            curr = queue.pop()
+            curr = stack.pop()
+            for neigh in curr.neighbors: 
+                if neigh not in dic:
+                    neighCopy = Node(neigh.val, [])
+                    dic[neigh] = neighCopy
+                    dic[curr].neighbors.append(neighCopy)
+                    stack.append(neigh)
+                else:
+                    dic[curr].neighbors.append(dic[neigh])
+        return(nodeCopy)
+    
+# BFS same as DFS iterative, but queue instead of stack
+    class Solution:
+    
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return
+        nodeCopy = Node(node.val, [])
+        dic = {node: nodeCopy}
+        queue = collections.deque([node])
+        while queue:
+            curr = queue.popleft()
             for neigh in curr.neighbors: 
                 if neigh not in dic:
                     neighCopy = Node(neigh.val, [])
