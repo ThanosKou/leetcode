@@ -34,6 +34,34 @@ class Solution:
                 self.dfs(grid, x, y, visited) 
 # Instead of visited, we could instead change the grid[][] itself. Whenever we visit a node, we can do grid[i][j] = '*'
 # and in the if condition of the recursion, ask grid[x][y] == '1'
-                
+class Solution:    
+    def isValid(self, x, y, grid):
+        m = len(grid)
+        n = len(grid[0])
+        if x < 0 or y < 0 or x >= m or y >= n or grid[x][y] != '1':
+            return False
+        return True
+    
+    def numIslands(self, grid: List[List[str]]) -> int:
+        
+        self.directions = [[-1,0], [0,-1], [0,1], [1,0]]
+        
+        m = len(grid)
+        n = len(grid[0])
+        
+        count = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    self.dfs(grid, i, j)
+                    count += 1
+        return(count)
+    
+    def dfs(self, grid, i, j):
+        grid[i][j] = '*'
+        for direc in self.directions:
+            x, y = i + direc[0], j + direc[1]
+            if self.isValid(x, y, grid):
+                self.dfs(grid, x, y)                
                 
 # https://leetcode.com/problems/number-of-islands/
