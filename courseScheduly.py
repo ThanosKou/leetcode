@@ -7,34 +7,29 @@ class Solution:
         if not prerequisites:
             return(True)
         
-        def addEdge(graph, u, v):
-            graph[u].append(v)
+        graph = {i: set() for i in range(numCourses)}
         
-        graph = [[] for _ in range(numCourses)]
-        visit = [0 for _ in range(numCourses)]
+        for course_pair in prerequisites:
+            next_course, prereq = course_pair
+            graph[next_course].add(prereq) # doesnt matter where to put next and prereq
         
-        for course_pair in prerequisites: # create graph
-            next_course, prereq_course = course_pair
-            graph[next_course].append(prereq_course)
-            
-        for i in range(numCourses):
-            if not self.dfs(graph, visit, i):
+        state = [0]*numCourses
+        
+        def hasCycle(v):
+            if state[v] == -1:
+                return(True)
+            if state[v] == 1:
                 return(False)
-        return(True)
-        # we need to check if there is a cycle, and also check for number of nodes visited --> DFS?
-        
-    def dfs(self, graph, visit, i):
-        # -1 means currently being visited
-        # 1 was visited previosuly
-        if visit[i] == -1:
-            return(False) # cycle
-        if visit[i] == 1:
-            return(True) 
-        visit[i] = -1
-        for j in graph[i]:
-            if not self.dfs(graph, visit, j):
-                return(False)
-        visit[i] = 1
+            state[v] = -1
+            for adj in graph[v]:
+                if hasCycle(adj):
+                    return(True)
+            state[v] = 1
+            return(False)
+
+        for course in graph:
+            if hasCycle(course):
+                return(False)       
         return(True)
       
       # 2) BFS topo sort , kahn's algo
@@ -70,6 +65,43 @@ class Solution:
           
         return(len(visited) == numCourses)
 
-      
+    # 3) DFS with stack 
+        
+class Solution:
+        
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        
+        if not prerequisites:
+            return(True)
+        
+        graph = {i: set() for i in range(numCourses)}
+        
+        for course_pair in prerequisites:
+            next_course, prereq = course_pair
+            graph[prereq].add(next_course)
+        
+
+        visited = set()
+        
+            
+        def hasCycle(v, stack):
+            if v in visited:
+                if v in stack: # it's like state == -1
+                    return(True)
+                return(False) # its like state == 1
+            visited.add(v)
+            stack.append(v) # marks it into current stack
+            for adj in graph[v]:
+                if hasCycle(adj, stack):
+                    return(True)
+            stack.pop()
+            return(False)
+
+        for course in graph:
+            stack = [] # new stack every time
+            if hasCycle(course, stack):
+                return(False)
+            
+        return(True)
       
    # https://leetcode.com/problems/course-schedule/   
