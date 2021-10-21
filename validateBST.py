@@ -31,5 +31,27 @@ class Solution:
                 bfs_queue.append((node.right, node.val, node_max))
       
         return(True)
+    
+## recursive
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        
+        output = []
+        self.inOrderTrav(root, output)
+        
+        for i in range(1, len(output)):
+            if output[i-1] >= output[i]:
+                return(False)
+        return(True)
+    
+    def inOrderTrav(self, root, output):
+        if not root:
+            return
+        
+        self.inOrderTrav(root.left, output)
+        output.append(root.val)
+        self.inOrderTrav(root.right, output)
+      
 
+    
 # https://leetcode.com/problems/validate-binary-search-tree/
