@@ -53,5 +53,33 @@ class Solution:
         self.inOrderTrav(root.right, output)
       
 
-    
+# iterative inOrder
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        
+        prev = float('-inf')
+        stack = []
+        curr = root
+        while True:
+            if curr:
+                stack.append(curr)
+                curr = curr.left
+            elif stack:
+                curr = stack.pop()
+                if curr.val <= prev:
+                    return(False)
+                prev = curr.val
+                curr = curr.right
+            else:
+                break
+
+        return(True)
+        
+
 # https://leetcode.com/problems/validate-binary-search-tree/
