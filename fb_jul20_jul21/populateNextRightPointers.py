@@ -39,5 +39,37 @@ class Solution:
         
         return(root)
 
+    ## But even better:
+    
+    """
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        
+        if not root:
+            return(root)
+        
+        curr = root
+        nxt = root.left # mark this as start of your next level
+        
+        while curr.left:
+            curr.left.next = curr.right
+            if curr.next:    
+                curr.right.next = curr.next.left
+                curr = curr.next
+            else:
+                curr = nxt
+                nxt = curr.left
+                
+        return(root)
+
 
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
