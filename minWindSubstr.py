@@ -1,21 +1,29 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-       
-      from collections import Counter
-  
-      need, missing = Counter(t), len(t) # need shows how many occur of each character we need, missing indicates when valid substring
-      I, J = 0, 0
-      i = 0
+        
+        need = collections.Counter(t)
+        missing = sum([i for i in need.values()])
+        j = 0
+        min_len = len(s)+1
+        
+        j = 0
+        start, end = 0, 0
+        for i in range(len(s)):
+            
+            if need[s[i]] > 0:
+                missing -= 1    
+            need[s[i]] -= 1
+            
+            while missing == 0:
+                if i - j + 1 < min_len:
+                    min_len = i - j + 1
+                    start = j
+                    end = i+1
+                need[s[j]] += 1
+                if need[s[j]] > 0:
+                    missing += 1            
+                j += 1
+        
+        return(s[start:end])
 
-      for j, ch in enumerate(s,1):
-        if need[ch] > 0:
-          missing -= 1
-        need[ch] -= 1 # we don't care for negative appearances, it shows we dont need that character
-        if not missing:
-          while i < j and need[s[i]] < 0:
-            need[s[i]] += 1
-            i += 1
-          if j - i <= J - I or not J:
-              J, I = j, i
-
-      return(s[I:J])
+#  https://leetcode.com/problems/minimum-window-substring/
